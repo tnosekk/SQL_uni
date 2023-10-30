@@ -49,3 +49,23 @@ WHERE
 order BY
     Country,
     CompanyName
+
+
+
+--- Napisz polecenie, które oblicza wartość każdej pozycji zamówienia o numerze 10250
+--- wartos kazdej pozycji = (unitprice*(1-discount))*quanitity
+
+SELECT
+    Orderid,
+    (unitprice*(1-discount))*quantity as total_price
+FROM
+    [Order details]
+WHERE
+    orderid = 10250
+
+--- 2. Napisz polecenie które dla każdego dostawcy (supplier) pokaże pojedynczą kolumnę zawierającą nr telefonu i nr faksu w formacie
+--- (numer telefonu i faksu mają być oddzielone przecinkiem)
+
+SELECT
+    *
+FROM Suppliers;
