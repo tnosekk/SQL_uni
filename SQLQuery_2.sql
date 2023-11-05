@@ -12,7 +12,8 @@ WHERE
     ShipCountry = 'argentina' and (ShippedDate IS NULL or ShippedDate > GETDATE())
 
 
---- 1. Wybierz nazwy i kraje wszystkich klientów, wyniki posortuj według kraju, w ramach danego kraju nazwy firm posortuj alfabetycznie
+--- 1. Wybierz nazwy i kraje wszystkich klientów, wyniki posortuj według kraju, 
+--- w ramach danego kraju nazwy firm posortuj alfabetycznie
 
 SELECT
     companyname,
@@ -23,7 +24,8 @@ ORDER BY
     Country,
     CompanyName
 
---- 2. Wybierz informację o produktach (grupa, nazwa, cena), produkty posortuj wg grup a w grupach malejąco wg ceny
+--- 2. Wybierz informację o produktach (grupa, nazwa, cena), 
+--- produkty posortuj wg grup a w grupach malejąco wg ceny
 
 SELECT
     CategoryID,
@@ -63,9 +65,3 @@ FROM
 WHERE
     orderid = 10250
 
---- 2. Napisz polecenie które dla każdego dostawcy (supplier) pokaże pojedynczą kolumnę zawierającą nr telefonu i nr faksu w formacie
---- (numer telefonu i faksu mają być oddzielone przecinkiem)
-
-SELECT
-    *
-FROM Suppliers;
