@@ -37,3 +37,24 @@ SELECT CompanyName,
         WHEN Fax is not NULL then Phone+ ',' + Fax
     end [Phone and Fax]
 FROM Suppliers;
+
+
+
+select top 5
+    orderid,
+    productid,
+    quantity
+FROM
+    [order details]
+order by Quantity DESC
+
+select top 5 with ties
+    orderid,
+    productid,
+    quantity
+FROM
+    [order details]
+order by Quantity DESC
+
+
+
