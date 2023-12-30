@@ -75,7 +75,7 @@ GROUP BY
 -- klientów jednostek towarów z tej kategorii.
 
 SELECT
-    c.CategoryID,
+    c.CategoryName,
     sum(od.Quantity) AS TotalUnitsOrdered
 FROM
     [Order Details] od
@@ -84,7 +84,7 @@ JOIN
 JOIN
     Categories c on c.CategoryID = p.CategoryID
 Group BY
-    c.CategoryID
+    c.CategoryName
     
 
 
@@ -93,14 +93,57 @@ Group BY
 -- jednostek towarów z tej kategorii.
 
 
+SELECT
+    c.CategoryName,
+    o.orderdate,
+    sum(od.Quantity) AS TotalUnitsOrdered
+FROM
+    [Order Details] od
+JOIN
+    Products p on p.ProductID = od.ProductID
+JOIN
+    Categories c on c.CategoryID = p.CategoryID
+JOIN
+    Orders o on o.OrderID = od.OrderID
+WHERE
+    YEAR(o.orderdate) = '1997'
+Group BY
+    c.CategoryName,
+    o.OrderDate
 
 
 -- 3. Dla każdej kategorii produktu (nazwa), podaj łączną wartość zamówionych przez
 -- klientów jednostek towarów z tek kategorii.
 
 
-
+SELECT
+    c.CategoryName,
+    o.CustomerID,
+    SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)) AS TotalValueOrdered
+FROM
+    [Order Details] od
+JOIN
+    Products p on p.ProductID = od.ProductID
+JOIN
+    Categories c on c.CategoryID = p.CategoryID
+JOIN
+    Orders o on o.OrderID = od.OrderID
+Group BY
+    c.CategoryName,
+    o.CustomerID
 
 -- 4. Dla każdej kategorii produktu (nazwa), podaj łączną wartość zamówionych towarów z
 -- tej kategorii.
+
+SELECT
+    c.CategoryName,
+    SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)) AS TotalValueOrdered
+FROM
+    [Order Details] od
+JOIN
+    Products p on p.ProductID = od.ProductID
+JOIN
+    Categories c on c.CategoryID = p.CategoryID
+Group BY
+    c.CategoryName
 
