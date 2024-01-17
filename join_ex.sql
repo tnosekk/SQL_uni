@@ -147,3 +147,108 @@ JOIN
 Group BY
     c.CategoryName
 
+---------------------------------------------------------------------------------------
+
+--1. Dla każdego przewoźnika (nazwa) podaj liczbę zamówień które przewieźli w 1997r
+
+SELECT
+    s.ShipperID,
+    COUNT(OrderID)
+FROM
+    Orders o
+JOIN Shippers s
+    ON s.ShipperID = o.ShipVia
+WHERE
+    year(o.orderdate) = 1997
+GROUP BY
+    s.ShipperID
+
+
+--2. Który z przewoźników był najaktywniejszy (przewiózł największą liczbę zamówień) w
+--1997r, podaj nazwę tego przewoźnika
+
+SELECT TOP(1)
+    s.ShipperID,
+    COUNT(orderID) as numorders
+from
+    orders o
+join shippers s
+    on s.ShipperID = o.shipvia
+WHERE
+    year(o.orderdate) = 1997
+group by
+    s.shipperid
+order by 
+    numorders DESC
+
+
+--3. Dla każdego przewoźnika podaj łączną wartość "opłat za przesyłkę" przewożonych
+--przez niego zamówień od '1998-05-03' do '1998-05-29'
+
+select
+    companyname,
+    isnull(sum(freight),0) as freight_sum
+from
+    orders o
+join shippers s
+    on o.shipvia = s.shipperid
+where
+    o.orderdate between '1998-05-03' and '1998-05-29'
+group by
+    s.CompanyName
+
+
+--4. Dla każdego pracownika (imię i nazwisko) podaj łączną wartość zamówień
+--obsłużonych przez tego pracownika w maju 1996
+
+SELECT
+    LastName,
+    FirstName,
+    count(orderid)
+from
+    orders o
+join employees e
+    on o.EmployeeID = e.EmployeeID
+WHERE
+    orderdate BETWEEN '1997-05-1' and '1997-05-31'
+Group BY
+    LastName,
+    FirstName
+
+
+
+--5. Który z pracowników obsłużył największą liczbę zamówień w 1996r, podaj imię i
+--nazwisko takiego pracownika
+
+SELECT top(5)
+    e.EmployeeID,
+    count(OrderID) as order_num
+FROM 
+    Orders o
+JOIN
+    Employees e
+    on o.EmployeeID = e.EmployeeID
+WHERE
+    YEAR(OrderDate) = 1996
+Group  BY
+    e.EmployeeID
+ORDER BY
+    order_num DESC
+
+
+
+--6. Który z pracowników był najaktywniejszy (obsłużył zamówienia o największej
+--wartości) w 1996r, podaj imię i nazwisko takiego pracownika
+
+
+------------------------------------------------------------------------
+
+--Dla każdego pracownika (imię i nazwisko) podaj łączną wartość zamówień
+--obsłużonych przez tego pracownika
+--Ogranicz wynik tylko do pracowników
+--a) którzy mają podwładnych
+--b) którzy nie mają podwładnych
+--2. Napisz polecenie, które wyświetla klientów z Francji którzy w 1998r złożyli więcej niż
+---dwa zamówienia oraz klientów z Niemiec którzy w 1997r złożyli więcej niż trzy
+---zamówienia
+
