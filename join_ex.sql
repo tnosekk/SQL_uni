@@ -236,9 +236,28 @@ ORDER BY
     order_num DESC
 
 
-
 --6. Który z pracowników był najaktywniejszy (obsłużył zamówienia o największej
 --wartości) w 1996r, podaj imię i nazwisko takiego pracownika
+
+select top(1)
+    lastname,
+    firstname,
+    sum((od.UnitPrice*od.Quantity)*(1-od.Discount)) as order_sum
+from
+    orders o
+join Employees e
+    on e.EmployeeID = o.EmployeeID
+join [Order Details] od
+    on od.OrderID = o.OrderID
+WHERE
+    year(OrderDate) = 1996
+GROUP BY
+    LastName,
+    FirstName
+ORDER BY
+    order_sum DESC
+
+
 
 
 ------------------------------------------------------------------------
@@ -247,8 +266,42 @@ ORDER BY
 --obsłużonych przez tego pracownika
 --Ogranicz wynik tylko do pracowników
 --a) którzy mają podwładnych
+
+select
+    e.FirstName,
+    e.employeeid,
+    sum((Quantity*UnitPrice)*(1-Discount)) as order_sum
+FROM
+    orders o
+JOIN
+    Employees e
+    on e.EmployeeID = o.EmployeeID
+Join
+    [Order Details] od
+    on od.OrderID = o.OrderID
+WHERE
+    e.EmployeeID in (select distinct ReportsTo  from Employees where ReportsTo is not NULL)
+GROUP BY
+    e.FirstName,
+    e.EmployeeID
+
 --b) którzy nie mają podwładnych
---2. Napisz polecenie, które wyświetla klientów z Francji którzy w 1998r złożyli więcej niż
----dwa zamówienia oraz klientów z Niemiec którzy w 1997r złożyli więcej niż trzy
----zamówienia
+
+select
+    e.FirstName,
+    e.EmployeeID,
+    sum((Quantity*UnitPrice)*(1-Discount)) as order_sum
+FROM
+    orders o
+JOIN
+    Employees e
+    on e.EmployeeID = o.EmployeeID
+Join
+    [Order Details] od
+    on od.OrderID = o.OrderID
+WHERE
+    e.EmployeeID not in (select distinct ReportsTo from Employees where ReportsTo is not NULL)
+GROUP BY
+    e.FirstName,
+    e.EmployeeID
 
